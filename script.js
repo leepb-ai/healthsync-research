@@ -117,46 +117,36 @@ function toggleOtherInput(elementId) {
 
 
 async function syncToAirtable() {
-    //
-   
-    const TABLE_NAME = "Submissions"; 
+    try {
+        // Prepare the payload (Make sure these keys match Airtable columns!)
+        const payload = {
+            fields: {
+                "Role": surveyData.role || "Unknown",
+                "Core_Symptom": surveyData.core_symptom || "N/A",
+                "Latency": surveyData.latency || "Not Asked",
+                "Clinical_Wishlist": surveyData.clinical_wishlist || "N/A",
+                "Patient_Feedback": surveyData.civilian_feedback || "N/A",
+                "Wait_Time": surveyData.wait || "N/A"
+            }
+        };
 
-    const url = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`;
-
-    // 2. MAP DATA (Ensure these names match your Airtable Column Headers EXACTLY)
-    const payload = {
-    fields: {
-        "Role": surveyData.role || "Unknown",
-        "Core_Symptom": surveyData.core_symptom || "N/A",
-        "Latency": surveyData.latency || "Not Asked", // Fixed for Civilians!
-        "Clinical_Wishlist": surveyData.clinical_wishlist || "N/A",
-        "Patient_Feedback": surveyData.civilian_feedback || "N/A",
-        "Wait_Time": surveyData.wait || "N/A" // Add this if you made a Wait Time column!
-    }
-};
-
-    // Instead of calling Airtable directly, call your new function
-const response = await fetch('/.netlify/functions/sync', {
-    method: 'POST',
-    body: JSON.stringify(payload) // Your existing payload object
-});
+        // This calls the "Shield" we are building in Netlify
+        const response = await fetch('/.netlify/functions/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
 
         if (response.ok) {
             console.log("✅ Sync Successful!");
             alert("Research Data Secured Successfully!");
         } else {
-            const error = await response.json();
-            console.error("❌ Airtable rejected the data:", error);
-            alert("Error: " + error.error.message);
+            const errorData = await response.json();
+            console.error("❌ Rejected:", errorData);
+            alert("Sync Failed: " + (errorData.message || "Check Console"));
         }
     } catch (err) {
         console.error("❌ Connection failed:", err);
-        alert("Failed to connect to the cloud. Check your internet.");
+        alert("Cloud connection failed. Data is still saved locally.");
     }
-}
-
-
-function completeResearch() {
-    navigateToQuestion('complete'); // Show success screen
-    syncToAirtable(); // Fire the data to the cloud
 }
