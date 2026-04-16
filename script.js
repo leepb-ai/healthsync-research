@@ -118,8 +118,8 @@ function toggleOtherInput(elementId) {
 
 async function syncToAirtable() {
     // 1. REPLACEMENTS (Put your actual IDs here)
-    const AIRTABLE_PAT = "pattuUSPFRP2qpOAD.c77ea536f451a55eeb6748b40ecd8c9fe01fbf838a14dc698bd6abe6d2dc580d"; 
-    const BASE_ID = "appVzjrb8RD67mRDE";
+    const AIRTABLE_PAT = ""; 
+    const BASE_ID = "";
     const TABLE_NAME = "Submissions"; 
 
     const url = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`;
