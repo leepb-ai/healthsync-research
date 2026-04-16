@@ -117,9 +117,8 @@ function toggleOtherInput(elementId) {
 
 
 async function syncToAirtable() {
-    // 1. REPLACEMENTS (Put your actual IDs here)
-    const AIRTABLE_PAT = ""; 
-    const BASE_ID = "";
+    //
+   
     const TABLE_NAME = "Submissions"; 
 
     const url = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`;
@@ -136,17 +135,11 @@ async function syncToAirtable() {
     }
 };
 
-    console.log("Attempting to sync:", payload);
-
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${AIRTABLE_PAT}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
+    // Instead of calling Airtable directly, call your new function
+const response = await fetch('/.netlify/functions/sync', {
+    method: 'POST',
+    body: JSON.stringify(payload) // Your existing payload object
+});
 
         if (response.ok) {
             console.log("✅ Sync Successful!");
