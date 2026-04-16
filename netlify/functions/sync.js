@@ -1,5 +1,4 @@
-// netlify/functions/sync.js
-const fetch = require('node-fetch');
+
 
 exports.handler = async (event) => {
   // 1. Get the secret keys from the Netlify Environment
