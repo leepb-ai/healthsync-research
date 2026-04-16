@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthSync Research Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-clipboard-check"></i> HealthSync Research</h1>
+            <p id="subHeader">Select your role to begin.</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="question-card active" data-question="0">
+            <span class="question-number">Mission Start</span>
+            <h2 class="question-text">Identify your role to begin the research mission:</h2>
+            <div class="duel-container">
+                <div class="patient-card" onclick="setRole('clinical')">
+                    <div class="patient-label">Clinical Staff</div>
+                    <i class="fas fa-user-md" style="font-size: 48px; display: block; margin: 20px auto; color: #2563EB;"></i>
+                    <div class="complaint-tag">Doctors, Nurses, Medics</div>
+                </div>
+                <div class="patient-card" onclick="setRole('civilian')">
+                    <div class="patient-label">Civilian</div>
+                    <i class="fas fa-hospital-user" style="font-size: 48px; display: block; margin: 20px auto; color: #64748B;"></i>
+                    <div class="complaint-tag">Patients and Visitors</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="10">
+            <span class="question-number">Clinical Q1</span>
+            <h2 class="question-text">O_2 Saturation vs. Respiratory Distress Priority:
+                Which patient is given the highest priority?
+            </h2>
+            <div class="duel-container">
+                <div class="patient-card" onclick="saveData('q10', 'Patient A'); nextQuestion()">
+                    <div class="patient-label">Patient A</div>
+                    <div class="vital-row"><span class="vital-label">O_2 Sat</span><span class="vital-value warning">92%</span></div>
+                    <div class="complaint-tag">Comfortable Breathing</div>
+                </div>
+                <div class="patient-card" onclick="saveData('q10', 'Patient B'); nextQuestion()">
+                    <div class="patient-label">Patient B</div>
+                    <div class="vital-row"><span class="vital-label">O_2 Sat</span><span class="vital-value normal">96%</span></div>
+                    <div class="complaint-tag">Gasping for Air</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="11">
+            <span class="question-number">Clinical Q2</span>
+            <h2 class="question-text">Which patient usually deteriorates faster?</h2>
+            <div class="duel-container">
+                <div class="patient-card" onclick="saveData('q11', 'Single Crash'); nextQuestion()">
+                    <div class="patient-label">Patient A</div>
+                    <div class="complaint-tag">Single severely abnormal vital (e.g., HR 150)</div>
+                </div>
+                <div class="patient-card" onclick="saveData('q11', 'Multiple Drift'); nextQuestion()">
+                    <div class="patient-label">Patient B</div>
+                    <div class="complaint-tag">Multiple moderately abnormal vitals</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="12">
+            <span class="question-number">Clinical Q3</span>
+            <h2 class="question-text">Absolute Value vs. Rate of Change:</h2>
+            <div class="duel-container">
+                <div class="patient-card" onclick="saveData('q12', 'Absolute'); nextQuestion()">
+                    <div class="patient-label">Absolute Value</div>
+                    <div class="complaint-tag">Current state right now</div>
+                </div>
+                <div class="patient-card" onclick="saveData('q12', 'Rate of Change'); nextQuestion()">
+                    <div class="patient-label">Rate of Change (Δ)</div>
+                    <div class="complaint-tag">Trend over the last 30 mins</div>
+                </div>
+            </div>
+        </div>
+
+   
+
+        <div class="question-card" data-question="vitals">
+            <span class="question-number">Clinical Q4</span>
+            <h2 class="question-text">How are vital signs currently integrated into your assessment?</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('vitals', 'Manual'); nextQuestion()">Manually Typed/Written</div>
+                <div class="chip" onclick="saveData('vitals', 'Auto'); nextQuestion()">Automated Sync</div>
+                <div class="chip" onclick="saveData('vitals', 'Verbal'); nextQuestion()">Relayed Verbally</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="latency">
+            <span class="question-number">Clinical Q5</span>
+            <h2 class="question-text">At what processing delay does a digital triage tool become a hindrance?(in seconds)</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('latency', '0.5s'); nextQuestion()">0.5s (Instant)</div>
+                <div class="chip" onclick="saveData('latency', '2s'); nextQuestion()">2.0s (Acceptable)</div>
+                <div class="chip" onclick="saveData('latency', '5s'); nextQuestion()">5.0s+ (Too Slow)</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="comm">
+            <span class="question-number">Clinical Q6</span>
+            <h2 class="question-text">Primary mode of communication between staff?</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('comm', 'Verbal'); nextQuestion()">Verbal</div>
+                <div class="chip" onclick="saveData('comm', 'WhatsApp'); nextQuestion()">WhatsApp/Social</div>
+                <div class="chip" onclick="saveData('comm', 'EMR'); nextQuestion()">Integrated EMR</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="overload">
+            <span class="question-number">Clinical Q7</span>
+            <h2 class="question-text">How are patients currently classified into priorities?</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('classification', 'Levels'); nextQuestion()">Triage Levels 1-5</div>
+                <div class="chip" onclick="saveData('classification', 'Colors'); nextQuestion()">Color Codes</div>
+                <div class="chip" onclick="saveData('classification', 'FCFS'); nextQuestion()">First Come First Served</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="accuracy">
+            <span class="question-number">Clinical Q8</span>
+            <h2 class="question-text">Does your current system allow triage data to move the patient instantly to the Doctor?</h2>
+            <div class="duel-container">
+                <div class="patient-card" onclick="saveData('sync', 'yes'); nextQuestion()">
+                    <div class="patient-label">Seamless Sync(Doctor sees data immediately it is logged into the system)</div>
+                    <i class="fas fa-sync" style="font-size: 32px; margin: 10px;"></i>
+                </div>
+                <div class="patient-card" onclick="saveData('sync', 'no'); nextQuestion()">
+                    <div class="patient-label">Manual Handover(Data is passed physically or verbally)</div>
+                    <i class="fas fa-file-alt" style="font-size: 32px; margin: 10px;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="bottleneck">
+            <span class="question-number">Clinical Q9</span>
+            <h2 class="question-text">Which process causes the most delay in triage?</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('bottleneck', 'Lab'); nextQuestion()">Lab Results</div>
+                <div class="chip" onclick="saveData('bottleneck', 'Admin'); nextQuestion()">Registration</div>
+                <div class="chip" onclick="saveData('bottleneck', 'Beds'); nextQuestion()">Bed Availability</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="training">
+    <span class="question-number">Clinical Q10</span>
+    <h2 class="question-text">Which physiological indicators most urgently signal a "Critical" status?</h2>
+    <div class="chip-grid">
+        <div class="chip" onclick="saveData('core_symptom', 'Respiratory'); nextQuestion()">Respiratory Distress</div>
+        <div class="chip" onclick="saveData('core_symptom', 'Cardiac'); nextQuestion()">Chest Pain/Arrhythmia</div>
+        <div class="chip" onclick="saveData('core_symptom', 'Neuro'); nextQuestion()">Neurological (GCS)</div>
+        <div class="chip" onclick="saveData('core_symptom', 'Sepsis'); nextQuestion()">Sepsis Indicators</div>
+        <div class="chip" onclick="saveData('core_symptom', 'Trauma'); nextQuestion()">Active Hemorrhage</div>
+        <div class="chip" style="background: #F1F5F9; border: 1px dashed #CBD5E1;" onclick="toggleOtherInput('training-other')">Other...</div>
+    </div>
+    <div id="training-other" style="display: none; margin-top: 15px;">
+        <input type="text" class="custom-input" placeholder="Please specify..." onkeydown="if(event.key==='Enter'){saveData('core_symptom', this.value); nextQuestion()}">
+    </div>
+</div>
+
+        <div class="question-card" data-question="missed-decision">
+            <span class="question-number">Clinical Q11</span>
+            <h2 class="question-text">Describe an instance where a triage decision was missed due to information overload:</h2>
+            <div class="textarea-container">
+                <textarea id="painPointText" oninput="saveData('missed_decision', this.value)" placeholder="Type your observation here..."></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="nextQuestion()">Submit Research Data <i class="fas fa-check"></i></button>
+            </div>
+        </div>
+
+      <div class="question-card" data-question="clinical-improvement">
+       <span class="question-number">Clinical Q12</span>
+       <h2 class="question-text">Identify one specific digital barrier that, if removed, would most significantly reduce your triage latency.</h2>
+       <div class="textarea-container">
+        <textarea oninput="saveData('clinical_wishlist', this.value)" placeholder="e.g., vitals entry..."></textarea>
+        </div>
+        <div class="btn-group">
+        <button class="btn btn-primary" onclick="nextQuestion()">Finish Research <i class="fas fa-check"></i></button>
+         </div>
+      </div>
+
+        <div class="question-card" data-question="exp-type">
+            <span class="question-number">Patient Q1</span>
+            <h2 class="question-text">Which experience are you reflecting on today?</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('context', 'current'); nextQuestion()">Current Visit</div>
+                <div class="chip" onclick="saveData('context', 'past'); nextQuestion()">A Past Experience</div>
+                <div class="chip" onclick="saveData('context', 'other'); nextQuestion()">Family Member's Visit</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="anxiety">
+            <span class="question-number">Patient Q2</span>
+            <h2 class="question-text">How would you describe your stress level regarding your health right now?</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('stress', 'Calm'); nextQuestion()">Calm</div>
+                <div class="chip" onclick="saveData('stress', 'Concerned'); nextQuestion()">Concerned</div>
+                <div class="chip" onclick="saveData('stress', 'Distressed'); nextQuestion()">Distressed</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="wait-time">
+            <span class="question-number">Patient Q3</span>
+            <h2 class="question-text">How long have you ever been in the waiting area?</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('wait', 'Under 30m'); nextQuestion()">Under 30 mins</div>
+                <div class="chip" onclick="saveData('wait', '1 Hour'); nextQuestion()">About 1 Hour</div>
+                <div class="chip" onclick="saveData('wait', 'Over 2 Hours'); nextQuestion()">Over 2 Hours</div>
+            </div>
+        </div>
+        
+        <div class="question-card" data-question="wait-frequency">
+            <span class="question-number">Patient Q4</span>
+            <h2 class="question-text">How often have you experienced this?</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('frequency', 'Every visit'); nextQuestion()">Every visit</div>
+                <div class="chip" onclick="saveData('frequency', 'Once in while'); nextQuestion()">Once in a while</div>
+                <div class="chip" onclick="saveData('frequency', 'Rarely'); nextQuestion()">Rarely</div>
+                <div class="chip" onclick="saveData('frequency', 'Quite often'); nextQuestion()">Quite often</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="clarity">
+            <span class="question-number">Patient Q5</span>
+            <h2 class="question-text">Do you understand why some patients are seen before others?</h2>
+            <div class="duel-container">
+                <div class="patient-card" onclick="saveData('clarity', 'Yes'); nextQuestion()">
+                    <div class="patient-label">Yes</div>
+                    <div class="complaint-tag">The process is clear</div>
+                </div>
+                <div class="patient-card" onclick="saveData('clarity', 'No'); nextQuestion()">
+                    <div class="patient-label">No</div>
+                    <div class="complaint-tag">It feels random</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="fairness">
+            <span class="question-number">Patient Q6</span>
+            <h2 class="question-text">How would you describe the order in which patients are being attended to?</h2>
+            <div class="chip-grid">
+                <div class="chip" onclick="saveData('order', 'arrival'); nextQuestion()">By Arrival Time</div>
+                <div class="chip" onclick="saveData('order', 'urgency'); nextQuestion()">By Urgency/Severity</div>
+                <div class="chip" onclick="saveData('order', 'unclear'); nextQuestion()">The Order is Unclear</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-question="patient-improvement">
+             <span class="question-number">Patient Q7</span>
+             <h2 class="question-text">What is one change in the intake process that would most improve your confidence and peace of mind during your next visit?</h2>
+          <div class="textarea-container">
+           <textarea oninput="saveData('patient_wishlist', this.value)" placeholder="Your feedback helps us design more empathetic systems..."></textarea>
+          </div>
+          <div class="btn-group">
+         <button class="btn btn-primary" onclick="nextQuestion()">Next Question <i class="fas fa-check"></i></button>
+          </div>
+        </div>
+
+        <div class="question-card" data-question="feedback">
+            <span class="question-number">Patient Q8</span>
+            <h2 class="question-text">Is there one specific part of the intake process that stood out to you?</h2>
+            <div class="textarea-container">
+                <textarea id="patientFeedback" oninput="saveData('civilian_feedback', this.value)" placeholder="Your perspective helps us build better systems..."></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="nextQuestion()">Finish Survey <i class="fas fa-check"></i></button>
+            </div>
+        </div>
+
+        <div class="question-card completion-card" data-question="complete">
+            <div class="completion-icon"><i class="fas fa-check"></i></div>
+            <h2 class="question-text">Mission Complete</h2>
+            <p style="color: #64748B; margin-bottom: 24px;">Thank you. Your responses have been safely recorded. Click below to sync your data to the HealthSync Cloud</p>
+            <button class="btn btn-primary" onclick="completeResearch()">Secure & Sync Data</button>
+        </div>
+
+        <div class="saved-indicator" id="savedIndicator">
+            <i class="fas fa-check-circle"></i> <span>Data Saved</span>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
