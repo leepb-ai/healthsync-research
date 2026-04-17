@@ -116,7 +116,7 @@ function toggleOtherInput(elementId) {
 }
 
 
-async function syncToAirtable() {
+async function completeResearch() {
     try {
         // Prepare the payload (Make sure these keys match Airtable columns!)
         const payload = {
