@@ -1,25 +1,38 @@
-
+const fetch = require('node-fetch'); // Use global fetch if on Node 18+
 
 exports.handler = async (event) => {
-  // 1. Get the secret keys from the Netlify Environment
-  const { AIRTABLE_PAT, BASE_ID } = process.env;
-  
-  // 2. Parse the data sent from your survey
-  const body = JSON.parse(event.body);
+  // Only allow POST requests
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "Method Not Allowed" };
+  }
 
   try {
-    const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/Submissions`, {
+    const payload = JSON.parse(event.body);
+    const BASE_ID = process.env.BASE_ID;
+    const TABLE_NAME = "Submissions"; // Double-check this matches Airtable exactly!
+    const AIRTABLE_PAT = process.env.AIRTABLE_PAT;
+
+    const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${AIRTABLE_PAT}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
-    return { statusCode: 200, body: JSON.stringify(data) };
+    const result = await response.json();
+
+    // Forward the actual Airtable status
+    return {
+      statusCode: response.status,
+      body: JSON.stringify(result)
+    };
+
   } catch (error) {
-    return { statusCode: 500, body: error.toString() };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message })
+    };
   }
 };
