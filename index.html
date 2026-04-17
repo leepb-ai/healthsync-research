@@ -175,7 +175,7 @@
                 <textarea id="painPointText" oninput="saveData('missed_decision', this.value)" placeholder="Type your observation here..."></textarea>
             </div>
             <div class="btn-group">
-                <button class="btn btn-primary" onclick="nextQuestion()">Submit Research Data <i class="fas fa-check"></i></button>
+                <button class="btn btn-primary" onclick="nextQuestion()">Next Question <i class="fas fa-check"></i></button>
             </div>
         </div>
 
@@ -186,7 +186,7 @@
         <textarea oninput="saveData('clinical_wishlist', this.value)" placeholder="e.g., vitals entry..."></textarea>
         </div>
         <div class="btn-group">
-        <button class="btn btn-primary" onclick="nextQuestion()">Finish Research <i class="fas fa-check"></i></button>
+        <button class="btn btn-primary" onclick="nextQuestion()">Finish Survey <i class="fas fa-check"></i></button>
          </div>
       </div>
 
@@ -280,7 +280,7 @@
 
         <div class="question-card completion-card" data-question="complete">
             <div class="completion-icon"><i class="fas fa-check"></i></div>
-            <h2 class="question-text">Mission Complete</h2>
+            <h2 class="question-text">Survey Complete</h2>
             <p style="color: #64748B; margin-bottom: 24px;">Thank you. Your responses have been safely recorded. Click below to sync your data to the HealthSync Cloud</p>
             <button class="btn btn-primary" onclick="completeResearch()">Secure & Sync Data</button>
         </div>
