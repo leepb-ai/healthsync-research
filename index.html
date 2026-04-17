@@ -71,20 +71,21 @@
 
         <div class="question-card" data-question="12">
             <span class="question-number">Clinical Q3</span>
-            <h2 class="question-text">Absolute Value vs. Rate of Change:</h2>
+            <h2 class="question-text">What is the primary concern regarding the patient's vitals?</h2>
             <div class="duel-container">
                 <div class="patient-card" onclick="saveData('q12', 'Absolute'); nextQuestion()">
-                    <div class="patient-label">Absolute Value</div>
+                    <div class="patient-label">Current Reading is Critical(e.g., sustained BP > 180/120)</div>
                     <div class="complaint-tag">Current state right now</div>
                 </div>
                 <div class="patient-card" onclick="saveData('q12', 'Rate of Change'); nextQuestion()">
-                    <div class="patient-label">Rate of Change (Δ)</div>
+                    <div class="patient-label">Rapidly Worsening Trend(e.g., BP dropping fast over 10 mins)</div>
                     <div class="complaint-tag">Trend over the last 30 mins</div>
+                </div>
+                <div class="patient-card" onclick="saveData('q12', 'Both'); nextQuestion()">
+                    <div class="patient-label">Both (Critical reading + worsening trend)</div>
                 </div>
             </div>
         </div>
-
-   
 
         <div class="question-card" data-question="vitals">
             <span class="question-number">Clinical Q4</span>
